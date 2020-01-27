@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Home')"></head>
+<body>
+
+<div th:replace="layout :: nav"></div>
+<div class="container">
+    <h3 class="mt-4 mb-3">Nueva Rúbrica</h3>
+
+    <form th:action="${action}" th:object="${rubrica}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Rúbrica" name="nombre" th:field="*{nombre}">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control" id="descripcion" placeholder="..." rows="3" name="descripcion" th:field="*{descripcion}"></textarea>
+        </div>
+        <h4 class="mt-2 mb-2">Indicadores</h4>
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Grupo</td>
+<!--                        <td>Mínimo</td>-->
+<!--                        <td>Máximo</td>-->
+                        <td>Función</td>
+<!--                        <td>Recomendaciones</td>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="indicador, stat : ${rubrica.indicadores}">
+                        <td><input type="text" class="form-control" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}"></td>
+                        <td><input type="text" class="form-control" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}"></td>
+                        <td><input type="text" class="form-control" th:id="funcion- + __${stat.index}__" name="grupo" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="addIndicator">Agregar indicador</button>
+
+        <div class="text-lg-right mt-3 mb-4">
+            <button type="submit" class="btn btn-success d-lg-inline d-block submit-btn">Create</button>
+        </div>
+    </form>
+
+</div>
+
+<div th:replace="layout :: scripts"></div>
+<script th:inline="javascript">
+    var i = 1;
+    var currentId = 0;
+    $("#addIndicator").click(function() {
+        $("tbody tr:last").clone().find("input").each(function() {
+            var currentClass = 'nombre';
+            $(this).val('').attr('id', function(_, id) {
+                currentClass = id.split('-')[0];
+                currentId = parseInt(id.split('-')[1], 10) + 1;
+                console.log(currentId)
+                return currentClass + '-' + currentId;
+            });
+            $(this).val('').attr('name', function(_, id) {
+                return `indicadores[${currentId}].${currentClass}`
+            });
+        }).end().appendTo("tbody");
+        i++;
+    });
+</script>
+</body>
+</html>
