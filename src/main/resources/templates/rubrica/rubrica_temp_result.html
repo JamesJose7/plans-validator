@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Home')"></head>
+<body>
+
+<div th:replace="layout :: nav"></div>
+<div class="container">
+    <h3 class="mt-4 mb-3">Resultados</h3>
+
+    <div class="row mb-3" th:each="indicador, stat : ${rubrica.getIndicadores()}">
+        <h3 th:text="${indicador.nombre}" class="col-12"></h3>
+        <p th:text="${indicador.funcion}" class="col-12"></p>
+        <div class="col-12 table-responsive" th:with="i=__${stat.index}__">
+            <table th:with="result=${results.get(i)}" class="table">
+                <thead>
+                    <tr>
+                        <td th:each="colName : ${result.getColumnNames()}" th:text="${colName}"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="resultRow : ${result.getResultList()}">
+                        <td th:each="resultCell : ${resultRow}" th:text="${resultCell}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="layout :: scripts"></div>
+</body>
+</html>

@@ -13,6 +13,7 @@ public class Indicador extends BaseEntity {
     private String grupo;
     private Long rangoMinimo;
     private Long rangoMaximo;
+    private String condicion;
     private String funcion;
     private String recomendaciones;
     @ManyToOne
@@ -49,6 +50,14 @@ public class Indicador extends BaseEntity {
 
     public void setRangoMaximo(Long rangoMaximo) {
         this.rangoMaximo = rangoMaximo;
+    }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
     }
 
     public String getFuncion() {

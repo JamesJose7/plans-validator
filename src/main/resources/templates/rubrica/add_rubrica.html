@@ -27,14 +27,16 @@
 <!--                        <td>Mínimo</td>-->
 <!--                        <td>Máximo</td>-->
                         <td>Función</td>
+                        <td>Condición</td>
 <!--                        <td>Recomendaciones</td>-->
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="indicador, stat : ${rubrica.indicadores}">
-                        <td><input type="text" class="form-control" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}"></td>
-                        <td><input type="text" class="form-control" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}"></td>
-                        <td><input type="text" class="form-control" th:id="funcion- + __${stat.index}__" name="grupo" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}"></td>
+                        <td><input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}"></td>
+                        <td><input type="text" class="form-control indicator-input" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}"></td>
+                        <td><textarea class="form-control indicator-input" th:id="funcion- + __${stat.index}__" name="funcion" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}"></textarea></td>
+                        <td><textarea class="form-control indicator-input" th:id="condicion- + __${stat.index}__" name="condicion" th:value="${indicador.condicion}" th:field="*{indicadores[__${stat.index}__].condicion}"></textarea></td>
                     </tr>
                     </tbody>
                 </table>
@@ -54,7 +56,7 @@
     var i = 1;
     var currentId = 0;
     $("#addIndicator").click(function() {
-        $("tbody tr:last").clone().find("input").each(function() {
+        $("tbody tr:last").clone().find(".indicator-input").each(function() {
             var currentClass = 'nombre';
             $(this).val('').attr('id', function(_, id) {
                 currentClass = id.split('-')[0];
