@@ -20,10 +20,10 @@ public class Indicador extends BaseEntity {
     private Long rangoMinimo;
     private Long rangoMaximo;
     @NotNull
-    @Size(min = 2, message = "*No puede estar vacía")
+    @Size(min = 1, message = "*No puede estar vacía")
     private String condicion;
     @NotNull
-    @Size(min = 2, message = "*No puede estar vacía")
+    @Size(min = 1, message = "*No puede estar vacía")
     private String funcion;
     private String recomendaciones;
     @ManyToOne

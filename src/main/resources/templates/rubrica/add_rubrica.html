@@ -5,9 +5,10 @@
 
 <div th:replace="layout :: nav"></div>
 <div class="container">
-    <h3 class="mt-4 mb-3">Nueva Rúbrica</h3>
+    <h3 class="mt-4 mb-3" th:text="${actionTitle}"></h3>
 
     <form th:action="${action}" th:object="${rubrica}" method="post">
+        <input type="hidden" name="id" th:field="*{id}">
         <div class="form-group">
             <label for="nombre">Nombre <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span></label>
             <input type="text" class="form-control" id="nombre" placeholder="Rúbrica" name="nombre" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')} ? 'field-error' : ''">
@@ -36,6 +37,7 @@
                         <td>
                             <input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')} ? 'field-error' : ''">
                             <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')}" th:errors="*{indicadores[__${stat.index}__].nombre}"></span>
+                            <input type="hidden" class="indicator-input" th:id="id- + __${stat.index}__" name="id" th:value="${indicador.id}" th:field="*{indicadores[__${stat.index}__].id}">
                         </td>
                         <td>
                             <input type="text" class="form-control indicator-input" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].grupo')} ? 'field-error' : ''">
@@ -60,7 +62,7 @@
         <button type="button" class="btn btn-secondary" id="addIndicator">Agregar indicador</button>
 
         <div class="text-lg-right mt-3 mb-4">
-            <button type="submit" class="btn btn-success d-lg-inline d-block submit-btn">Create</button>
+            <button type="submit" class="btn btn-success d-lg-inline d-block submit-btn" th:text="${actionBtn}"></button>
         </div>
     </form>
 

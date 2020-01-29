@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Rubricas')"></head>
+<body>
+
+<div th:replace="layout :: nav"></div>
+<div class="container">
+    <div th:replace="layout :: flash"></div>
+
+    <div class="row mt-3">
+        <div class="col-md-9">
+            <h1>Rúbricas</h1>
+        </div>
+        <div class="col-md-3 text-right pt-1">
+            <a th:href="@{${addNewRubricaLink}}" class="btn-icon add-rubrica-btn btn btn-success">
+                <i class="material-icons">add</i>
+                Nueva
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col"># Indicadores</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rubrica : ${rubricas}">
+                <td><a th:href="@{|/rubricas/edit/${rubrica.id}|}" th:text="${rubrica.nombre}"></a></td>
+                <td th:text="${rubrica.descripcion}"></td>
+                <td th:text="${rubrica.indicadores.size()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="layout :: scripts"></div>
+</body>
+</html>
