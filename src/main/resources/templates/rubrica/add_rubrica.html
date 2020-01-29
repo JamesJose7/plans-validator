@@ -9,8 +9,8 @@
 
     <form th:action="${action}" th:object="${rubrica}" method="post">
         <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Rúbrica" name="nombre" th:field="*{nombre}">
+            <label for="nombre">Nombre <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span></label>
+            <input type="text" class="form-control" id="nombre" placeholder="Rúbrica" name="nombre" th:field="*{nombre}" th:classappend="${#fields.hasErrors('nombre')} ? 'field-error' : ''">
         </div>
         <div class="form-group">
             <label for="descripcion">Descripción</label>
@@ -28,15 +28,30 @@
 <!--                        <td>Máximo</td>-->
                         <td>Función</td>
                         <td>Condición</td>
-<!--                        <td>Recomendaciones</td>-->
+                        <td>Recomendaciones</td>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="indicador, stat : ${rubrica.indicadores}">
-                        <td><input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}"></td>
-                        <td><input type="text" class="form-control indicator-input" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}"></td>
-                        <td><textarea class="form-control indicator-input" th:id="funcion- + __${stat.index}__" name="funcion" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}"></textarea></td>
-                        <td><textarea class="form-control indicator-input" th:id="condicion- + __${stat.index}__" name="condicion" th:value="${indicador.condicion}" th:field="*{indicadores[__${stat.index}__].condicion}"></textarea></td>
+                        <td>
+                            <input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')} ? 'field-error' : ''">
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')}" th:errors="*{indicadores[__${stat.index}__].nombre}"></span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control indicator-input" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].grupo')} ? 'field-error' : ''">
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].grupo')}" th:errors="*{indicadores[__${stat.index}__].grupo}"></span>
+                        </td>
+                        <td>
+                            <textarea rows="1" class="form-control indicator-input" th:id="funcion- + __${stat.index}__" name="funcion" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].funcion')} ? 'field-error' : ''"></textarea>
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].funcion')}" th:errors="*{indicadores[__${stat.index}__].funcion}"></span>
+                        </td>
+                        <td>
+                            <textarea rows="1" class="form-control indicator-input" th:id="condicion- + __${stat.index}__" name="condicion" th:value="${indicador.condicion}" th:field="*{indicadores[__${stat.index}__].condicion}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].condicion')} ? 'field-error' : ''"></textarea>
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].condicion')}" th:errors="*{indicadores[__${stat.index}__].condicion}"></span>
+                        </td>
+                        <td>
+                            <textarea rows="1" class="form-control indicator-input" th:id="recomendaciones- + __${stat.index}__" name="recomendaciones" th:value="${indicador.recomendaciones}" th:field="*{indicadores[__${stat.index}__].recomendaciones}"></textarea>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

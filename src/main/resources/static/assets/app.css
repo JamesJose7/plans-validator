@@ -1,0 +1,11 @@
+/* Base styles */
+
+span.field-error {
+    color: firebrick;
+}
+
+input[type="text"].field-error,
+textarea.field-error {
+    border: 1px solid firebrick;
+    border-bottom: 3px solid firebrick;
+}

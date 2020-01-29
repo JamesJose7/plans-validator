@@ -7,12 +7,18 @@ import com.utpl.plansvalidator.sql.indicador.Indicador;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 public class Rubrica extends BaseEntity {
+    @NotNull
+    @Size(min = 2, max = 100, message = "*Debe tener mínimo {min} caracteres y máximo {max}")
     private String nombre;
     private String descripcion;
+    @Valid
     @OneToMany(mappedBy = "rubrica", cascade = CascadeType.ALL)
     private List<Indicador> indicadores;
     @OneToMany(mappedBy = "rubrica")

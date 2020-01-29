@@ -4,21 +4,20 @@ import com.utpl.plansvalidator.custom_queries.CustomResultList;
 import com.utpl.plansvalidator.custom_queries.PlanDocenteQueryResolver;
 import com.utpl.plansvalidator.sql.indicador.Indicador;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
-import net.sf.jsqlparser.JSQLParserException;
+import com.utpl.plansvalidator.sql.rubrica.RubricaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class RubricaController {
@@ -27,6 +26,8 @@ public class RubricaController {
 
     @Autowired
     private PlanDocenteQueryResolver planDocenteQueryResolver;
+    @Autowired
+    private RubricaRepository rubricaRepository;
 
     @GetMapping("/rubricas/new")
     public String addRubricaForm(Model model) {
@@ -53,10 +54,18 @@ public class RubricaController {
     }
 
     @PostMapping("/rubricas/add")
-    public String addRubrica(@Valid Rubrica rubrica, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("rubrica", rubrica);
+    public String addRubrica(@Valid Rubrica rubrica, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.rubrica", result);
+            redirectAttributes.addFlashAttribute("rubrica", rubrica);
+            return "redirect:/rubricas/new";
+        }
+//        rubricaRepository.save(rubrica);
+        return "redirect:/rubricas";
+
+        // TODO: Move to validator
         // Validate
-        List<Indicador> indicadores = rubrica.getIndicadores();
+        /*List<Indicador> indicadores = rubrica.getIndicadores();
         List<CustomResultList> indicatorsResults = indicadores.stream()
                 .map(indicador -> {
                     // Execute Query and get the resulting object
@@ -70,8 +79,7 @@ public class RubricaController {
                     return result;
                 })
                 .collect(Collectors.toList());
-        redirectAttributes.addFlashAttribute("results", indicatorsResults);
-//        return "redirect:/rubricas/new";
-        return "redirect:/rubricas/temp";
+        redirectAttributes.addFlashAttribute("results", indicatorsResults);*/
+        // Save Rubrica
     }
 }

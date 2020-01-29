@@ -6,14 +6,24 @@ import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Indicador extends BaseEntity {
+    @NotNull
+    @Size(min = 2, max = 50, message = "*Debe tener mínimo {min} caracteres y máximo {max}")
     private String nombre;
+    @NotNull
+    @Size(min = 2, max = 50, message = "*Debe tener mínimo {min} caracteres y máximo {max}")
     private String grupo;
     private Long rangoMinimo;
     private Long rangoMaximo;
+    @NotNull
+    @Size(min = 2, message = "*No puede estar vacía")
     private String condicion;
+    @NotNull
+    @Size(min = 2, message = "*No puede estar vacía")
     private String funcion;
     private String recomendaciones;
     @ManyToOne
