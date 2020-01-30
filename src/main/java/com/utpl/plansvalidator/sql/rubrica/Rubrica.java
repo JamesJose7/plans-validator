@@ -1,12 +1,11 @@
 package com.utpl.plansvalidator.sql.rubrica;
 
 import com.utpl.plansvalidator.core.BaseEntity;
-import com.utpl.plansvalidator.sql.enlacesrubrica.EnlacesRubrica;
+import com.utpl.plansvalidator.sql.enlacesrubrica.EnlaceRubricas;
 import com.utpl.plansvalidator.sql.indicador.Indicador;
+import com.utpl.plansvalidator.sql.restriccionrubrica.RestriccionRubrica;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -21,8 +20,12 @@ public class Rubrica extends BaseEntity {
     @Valid
     @OneToMany(mappedBy = "rubrica", cascade = CascadeType.ALL)
     private List<Indicador> indicadores;
-    @OneToMany(mappedBy = "rubrica")
-    private List<EnlacesRubrica> enlacesRubricas;
+
+    @ManyToOne
+    @JoinColumn(name="enlaceRubricas_id", nullable=false)
+    private EnlaceRubricas enlaceRubricas;
+    @OneToOne
+    private RestriccionRubrica restriccion;
 
     public String getNombre() {
         return nombre;
@@ -48,11 +51,19 @@ public class Rubrica extends BaseEntity {
         this.indicadores = indicadores;
     }
 
-    public List<EnlacesRubrica> getEnlacesRubricas() {
-        return enlacesRubricas;
+    public EnlaceRubricas getEnlaceRubricas() {
+        return enlaceRubricas;
     }
 
-    public void setEnlacesRubricas(List<EnlacesRubrica> enlacesRubricas) {
-        this.enlacesRubricas = enlacesRubricas;
+    public void setEnlaceRubricas(EnlaceRubricas enlaceRubricas) {
+        this.enlaceRubricas = enlaceRubricas;
+    }
+
+    public RestriccionRubrica getRestriccion() {
+        return restriccion;
+    }
+
+    public void setRestriccion(RestriccionRubrica restriccion) {
+        this.restriccion = restriccion;
     }
 }
