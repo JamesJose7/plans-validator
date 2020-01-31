@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head('Nuevo Enlace')"></head>
+<body>
+
+<div th:replace="layout :: nav"></div>
+<div class="container">
+    <div th:replace="layout :: flash"></div>
+    <h3 class="mt-4 mb-3" th:text="${actionTitle}"></h3>
+
+    <form th:action="${action}" th:object="${enlaceRubricas}" method="post">
+        <input type="hidden" name="previousPeriodo" th:value="${enlaceRubricas.periodo.id}">
+        <input type="hidden" name="id" th:field="*{id}">
+        <div class="form-group">
+            <label for="periodo">Periodo</label>
+            <select name="periodo" id="periodo" class="custom-select">
+                <option th:field="*{periodo}" th:value="${enlaceRubricas.periodo.id}" th:text="${enlaceRubricas.periodo.nombre}"></option>
+                <option th:each="periodo : ${periodos}" th:field="*{periodo}" th:value="${periodo.id}" th:text="${periodo.nombre}"></option>
+            </select>
+        </div>
+        <h4 class="mt-2 mb-2">Rubricas</h4>
+        <div class="form-group">
+            <div class="custom-control custom-switch mb-2" th:each="rubrica, stat : ${enlaceRubricas.rubricas}">
+                <input type="checkbox" class="custom-control-input" th:id="rubrica- + ${stat.index}" th:value="${rubrica.id}" th:field="*{rubricas[__${stat.index}__]}">
+                <label class="custom-control-label" th:for="rubrica- + ${stat.index}" th:text="${rubrica.nombre}"></label>
+            </div>
+            <div class="custom-control custom-switch mb-2" th:each="rubrica, stat : ${rubricas}" th:with="i=${stat.index + enlaceRubricas.rubricas.size()}">
+                <input type="checkbox" class="custom-control-input" th:id="rubrica- + ${i}" th:value="${rubrica.id}" th:field="*{rubricas[__${i}__]}">
+                <label class="custom-control-label" th:for="rubrica- + ${i}" th:text="${rubrica.nombre}"></label>
+            </div>
+        </div>
+
+        <div class="text-lg-right mt-3 mb-4">
+            <button type="submit" class="btn btn-success d-lg-inline d-block submit-btn" th:text="${actionBtn}"></button>
+        </div>
+    </form>
+
+</div>
+
+<div th:replace="layout :: scripts"></div>
+</body>
+</html>
