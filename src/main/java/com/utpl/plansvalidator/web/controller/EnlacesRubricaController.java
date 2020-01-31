@@ -78,8 +78,14 @@ public class EnlacesRubricaController {
                     new FlashMessage("Por favor seleccione al menos una rúbrica", FlashMessage.Status.FAILURE));
             return failureRedirect;
         }
+        // Check if 'Periodo' is set already
+        if (enlaceRubricasRepository.findByPeriodo(enlaceRubricas.getPeriodo()).isPresent()) {
+            redirectAttributes.addFlashAttribute("flash",
+                    new FlashMessage("El periodo seleccionado ya ha sido asignado", FlashMessage.Status.FAILURE));
+            return failureRedirect;
+        }
         // Save 'enlace'
-        enlaceRubricas.getRubricas().forEach(rubrica -> rubrica.setEnlaceRubricas(enlaceRubricas));
+        enlaceRubricas.getRubricas().forEach(rubrica -> rubrica.addEnlaceRubricas(enlaceRubricas));
         enlaceRubricas.getPeriodo().setEnlaceRubricas(enlaceRubricas);
         enlaceRubricasRepository.save(enlaceRubricas);
         redirectAttributes.addFlashAttribute("flash",

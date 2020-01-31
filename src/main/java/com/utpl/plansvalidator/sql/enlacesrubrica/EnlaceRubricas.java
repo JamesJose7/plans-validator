@@ -4,16 +4,19 @@ import com.utpl.plansvalidator.core.BaseEntity;
 import com.utpl.plansvalidator.sql.periodo.Periodo;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class EnlaceRubricas extends BaseEntity {
     @OneToOne
+    @JoinColumn(unique = true)
     private Periodo periodo;
-    @OneToMany(mappedBy = "enlaceRubricas")
+    @ManyToMany
+    @JoinTable(
+            name = "enlace_rubricas_mapper",
+            joinColumns = @JoinColumn(name = "enlaceRubricas_id"),
+            inverseJoinColumns = @JoinColumn(name = "rubrica_id"))
     private List<Rubrica> rubricas;
 
     public Periodo getPeriodo() {

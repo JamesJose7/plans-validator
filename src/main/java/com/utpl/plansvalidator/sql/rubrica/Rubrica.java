@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Rubrica extends BaseEntity {
@@ -21,9 +22,8 @@ public class Rubrica extends BaseEntity {
     @OneToMany(mappedBy = "rubrica", cascade = CascadeType.ALL)
     private List<Indicador> indicadores;
 
-    @ManyToOne
-    @JoinColumn(name="enlaceRubricas_id")
-    private EnlaceRubricas enlaceRubricas;
+    @ManyToMany(mappedBy = "rubricas")
+    private Set<EnlaceRubricas> enlaceRubricas;
     @OneToOne
     private RestriccionRubrica restriccion;
 
@@ -51,12 +51,16 @@ public class Rubrica extends BaseEntity {
         this.indicadores = indicadores;
     }
 
-    public EnlaceRubricas getEnlaceRubricas() {
+    public Set<EnlaceRubricas> getEnlaceRubricas() {
         return enlaceRubricas;
     }
 
-    public void setEnlaceRubricas(EnlaceRubricas enlaceRubricas) {
+    public void setEnlaceRubricas(Set<EnlaceRubricas> enlaceRubricas) {
         this.enlaceRubricas = enlaceRubricas;
+    }
+
+    public void addEnlaceRubricas(EnlaceRubricas enlaceRubricas) {
+        this.enlaceRubricas.add(enlaceRubricas);
     }
 
     public RestriccionRubrica getRestriccion() {
