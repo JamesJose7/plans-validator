@@ -22,7 +22,7 @@ public class Rubrica extends BaseEntity {
     private List<Indicador> indicadores;
 
     @ManyToOne
-    @JoinColumn(name="enlaceRubricas_id", nullable=false)
+    @JoinColumn(name="enlaceRubricas_id")
     private EnlaceRubricas enlaceRubricas;
     @OneToOne
     private RestriccionRubrica restriccion;
