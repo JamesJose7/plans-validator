@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PeriodoRepository extends CrudRepository<Periodo, Long> {
@@ -12,4 +13,5 @@ public interface PeriodoRepository extends CrudRepository<Periodo, Long> {
     @Override
     List<Periodo> findAll();
     List<Periodo> findAllByEnlaceRubricasIsNull();
+    Optional<Periodo> findByGuid(String guid);
 }

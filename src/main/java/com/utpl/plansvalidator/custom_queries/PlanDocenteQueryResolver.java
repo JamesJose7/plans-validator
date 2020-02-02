@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class PlanDocenteQueryResolver {
     // TODO: limit the select to a single table to avoid accessing other tables '...(%s from PlanDocente)...'
-    public static final String QUERY_WRAPPER = "SELECT * FROM (%s) t WHERE %s";
+    public static final String QUERY_WRAPPER = "SELECT * FROM (%s, id as id from plan) t WHERE %s AND id=%d";
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public CustomResultList executeQuery(String query, String condition) throws JSQLParserException, SQLSyntaxErrorException {
-        query = String.format(QUERY_WRAPPER, query, condition);
+    public CustomResultList executeQuery(String query, String condition, Long planId) throws JSQLParserException, SQLSyntaxErrorException {
+        query = String.format(QUERY_WRAPPER, query, condition, planId);
         List<String> columnNames = new ArrayList<>();
 
         // Parse query to get aliases while also checking it's a valid select statement and no other query
