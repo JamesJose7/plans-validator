@@ -4,7 +4,7 @@
 <body>
 
 <div th:replace="layout :: nav"></div>
-<div class="container">
+<div class="container-fluid">
     <h3 class="mt-4 mb-3" th:text="${actionTitle}"></h3>
 
     <form th:action="${action}" th:object="${rubrica}" method="post">
@@ -24,7 +24,8 @@
                     <thead>
                     <tr>
                         <td>Nombre</td>
-                        <td>Grupo</td>
+                        <td>Criterio</td>
+                        <td>Descripción</td>
 <!--                        <td>Mínimo</td>-->
 <!--                        <td>Máximo</td>-->
                         <td>Función</td>
@@ -40,8 +41,12 @@
                             <input type="hidden" class="indicator-input" th:id="id- + __${stat.index}__" name="id" th:value="${indicador.id}" th:field="*{indicadores[__${stat.index}__].id}">
                         </td>
                         <td>
-                            <input type="text" class="form-control indicator-input" th:id="grupo- + __${stat.index}__" name="grupo" th:value="${indicador.grupo}" th:field="*{indicadores[__${stat.index}__].grupo}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].grupo')} ? 'field-error' : ''">
-                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].grupo')}" th:errors="*{indicadores[__${stat.index}__].grupo}"></span>
+                            <input type="text" class="form-control indicator-input" th:id="criterio- + __${stat.index}__" name="criterio" th:value="${indicador.criterio}" th:field="*{indicadores[__${stat.index}__].criterio}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].criterio')} ? 'field-error' : ''">
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].criterio')}" th:errors="*{indicadores[__${stat.index}__].criterio}"></span>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control indicator-input" th:id="descripcion- + __${stat.index}__" name="descripcion" th:value="${indicador.descripcion}" th:field="*{indicadores[__${stat.index}__].descripcion}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].descripcion')} ? 'field-error' : ''">
+                            <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].descripcion')}" th:errors="*{indicadores[__${stat.index}__].descripcion}"></span>
                         </td>
                         <td>
                             <textarea rows="1" class="form-control indicator-input" th:id="funcion- + __${stat.index}__" name="funcion" th:value="${indicador.funcion}" th:field="*{indicadores[__${stat.index}__].funcion}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].funcion')} ? 'field-error' : ''"></textarea>

@@ -19,7 +19,7 @@ public class Rubrica extends BaseEntity {
     private String nombre;
     private String descripcion;
     @Valid
-    @OneToMany(mappedBy = "rubrica", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "rubricas")
     private List<Indicador> indicadores;
 
     @ManyToMany(mappedBy = "rubricas")

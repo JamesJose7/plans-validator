@@ -88,8 +88,9 @@ public class RubricaController {
             redirectAttributes.addFlashAttribute("rubrica", rubrica);
             return "redirect:/rubricas/new";
         }
-        rubrica.getIndicadores().forEach(indicador -> indicador.setRubrica(rubrica));
+        rubrica.getIndicadores().forEach(indicador -> indicador.addRubrica(rubrica));
         rubricaRepository.save(rubrica);
+        indicadorRepository.saveAll(rubrica.getIndicadores());
         redirectAttributes.addFlashAttribute("flash", new FlashMessage("Rúbrica agregada correctamente", FlashMessage.Status.SUCCESS));
         return "redirect:/rubricas";
 

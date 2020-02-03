@@ -1,51 +1,22 @@
 package com.utpl.plansvalidator.core;
 
-import com.utpl.plansvalidator.custom_queries.PlanDocenteQueryResolver;
-import com.utpl.plansvalidator.nosql.historialvalidacion.HistorialValidacionRepository;
-import com.utpl.plansvalidator.planes_api.PlanesApiClient;
-import com.utpl.plansvalidator.planes_api.PlanesApiService;
-import com.utpl.plansvalidator.sql.enlacesrubrica.EnlacesRubricaRepository;
-import com.utpl.plansvalidator.sql.indicador.Indicador;
-import com.utpl.plansvalidator.sql.indicador.IndicadorRepository;
-import com.utpl.plansvalidator.sql.plandocente.PlanDocente;
-import com.utpl.plansvalidator.sql.plandocente.PlanDocenteRepository;
-import com.utpl.plansvalidator.sql.rubrica.Rubrica;
-import com.utpl.plansvalidator.sql.rubrica.RubricaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Component
 public class StartupConfig {
     private static Logger logger = LoggerFactory.getLogger(StartupConfig.class.getName());
 
-    @Autowired
-    private RubricaRepository rubricaRepository;
-    @Autowired
-    private IndicadorRepository indicadorRepository;
-
-    @Autowired
-    private PlanDocenteRepository planDocenteRepository;
-    @Autowired
-    private PlanDocenteQueryResolver planQuery;
-
-    @Autowired
-    private EnlacesRubricaRepository enlacesRubricaRepository;
-    @Autowired
-    private HistorialValidacionRepository historialValidacionRepository;
 
     @EventListener(ContextRefreshedEvent.class)
     public void bootConfiguration() throws IOException {
         // Plan docente for testing
-        PlanesApiService planesApiService = PlanesApiClient.getClient().create(PlanesApiService.class);
+        /*PlanesApiService planesApiService = PlanesApiClient.getClient().create(PlanesApiService.class);
         String periodo = "46c50734-4710-008a-e053-ac10360c415f";
         String componente = "UTPL-TNCCO0039";
         PlanDocente planDocente = planesApiService.getPlanDocente(
@@ -59,18 +30,6 @@ public class StartupConfig {
             Optional<PlanDocente> optionalPlanDocente = planDocenteRepository.findByComponente(componente);
             if (!optionalPlanDocente.isPresent())
                 planDocenteRepository.save(planDocente);
-        }
-
-        Indicador i1 = new Indicador();
-        i1.setNombre("i1");
-        Indicador i2 = new Indicador();
-        i2.setNombre("i2");
-        Indicador i3 = new Indicador();
-        i3.setNombre("i3");
-        Rubrica r1 = new Rubrica();
-        ArrayList<Indicador> indicadores = new ArrayList<>(Arrays.asList(i1, i2, i3));
-        indicadores.forEach(i -> i.setRubrica(r1));
-        r1.setIndicadores(indicadores);
-//        rubricaRepository.save(r1);
+        }*/
     }
 }

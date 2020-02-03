@@ -3,6 +3,11 @@ body {
     font-family: 'Lato', sans-serif;
 }
 
+.container-fluid {
+    width: 95% !important;
+    margin: 0 auto;
+}
+
 span.field-error {
     color: firebrick;
 }
@@ -35,16 +40,11 @@ textarea.field-error {
     background-color: rgb(46,125,50);
 }
 
-.btn-icon i {
-    vertical-align: middle;
-}
-
-/* rubricas */
-
-.add-rubrica-btn {
+.btn-icon {
     font-size: 15px;
 }
 
-.add-rubrica-btn i {
+.btn-icon i {
+    vertical-align: middle;
     font-size: 18px;
 }
