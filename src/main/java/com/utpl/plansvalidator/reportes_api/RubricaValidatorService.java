@@ -25,8 +25,8 @@ public class RubricaValidatorService {
         // Build reporte
         currentPlanId = plan.getId();
         reporte = new Reporte();
-        reporte.setName(plan.getComponente() + "");
-        reporte.setDescription("");
+        reporte.setNombre(plan.getComponente() + "");
+        reporte.setDescripcion("");
         // Get query results
         rubricas.stream()
                 .map(Rubrica::getIndicadores)
@@ -46,12 +46,12 @@ public class RubricaValidatorService {
         }
         // Build indicador
         Reporte.IndicadorReporte indicadorReporte = new Reporte.IndicadorReporte();
-        indicadorReporte.setName(indicador.getNombre());
-        indicadorReporte.setGroupName(indicador.getGrupo());
-        indicadorReporte.setSuccessful(!customResultList.getResultList().isEmpty());
+        indicadorReporte.setNombre(indicador.getNombre());
+        indicadorReporte.setCriterio(indicador.getCriterio());
+        indicadorReporte.setExitoso(!customResultList.getResultList().isEmpty());
         if (customResultList.getResultList().isEmpty())
             indicadorReporte.addError(indicador.getRecomendaciones());
-        indicadorReporte.setExpected(indicador.getCondicion());
+        indicadorReporte.setCondicion(indicador.getCondicion());
         return indicadorReporte;
     }
 }

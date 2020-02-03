@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reporte {
-    private String name;
-    private String description;
+    private String nombre;
+    private String descripcion;
     private List<IndicadorReporte> indicadores;
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public List<IndicadorReporte> getIndicadores() {
@@ -39,56 +39,56 @@ public class Reporte {
     }
 
     public static class IndicadorReporte {
-        private String groupName;
-        private String name;
-        private boolean successful;
-        private String expected;
-        private List<String> errors;
+        private String criterio;
+        private String nombre;
+        private boolean exitoso;
+        private String condicion;
+        private List<String> errores;
 
-        public String getGroupName() {
-            return groupName;
+        public String getCriterio() {
+            return criterio;
         }
 
-        public void setGroupName(String groupName) {
-            this.groupName = groupName;
+        public void setCriterio(String criterio) {
+            this.criterio = criterio;
         }
 
-        public String getName() {
-            return name;
+        public String getNombre() {
+            return nombre;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
         }
 
-        public boolean isSuccessful() {
-            return successful;
+        public boolean isExitoso() {
+            return exitoso;
         }
 
-        public void setSuccessful(boolean successful) {
-            this.successful = successful;
+        public void setExitoso(boolean exitoso) {
+            this.exitoso = exitoso;
         }
 
-        public String getExpected() {
-            return expected;
+        public String getCondicion() {
+            return condicion;
         }
 
-        public void setExpected(String expected) {
-            this.expected = expected;
+        public void setCondicion(String condicion) {
+            this.condicion = condicion;
         }
 
-        public List<String> getErrors() {
-            return errors;
+        public List<String> getErrores() {
+            return errores;
         }
 
-        public void setErrors(List<String> errors) {
-            this.errors = errors;
+        public void setErrores(List<String> errores) {
+            this.errores = errores;
         }
 
         public void addError(String error) {
-            if (this.errors == null)
-                this.errors = new ArrayList<>();
-            this.errors.add(error);
+            if (this.errores == null)
+                this.errores = new ArrayList<>();
+            this.errores.add(error);
         }
     }
 }
