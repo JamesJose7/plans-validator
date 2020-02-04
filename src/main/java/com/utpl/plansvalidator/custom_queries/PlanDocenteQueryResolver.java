@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlanDocenteQueryResolver {
-    // TODO: limit the select to a single table to avoid accessing other tables '...(%s from PlanDocente)...'
-    public static final String QUERY_WRAPPER = "SELECT * FROM (%s, id as id from plan) t WHERE %s AND id=%d";
+    public static final String QUERY_WRAPPER = "SELECT * FROM (%s, id as id) t WHERE %s AND id=%d";
 
     @PersistenceContext
     private EntityManager entityManager;

@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <h3 class="mt-4 mb-3" th:text="${actionTitle}"></h3>
 
-    <form th:action="${action}" th:object="${rubrica}" method="post">
+    <form th:action="${action}" th:object="${rubricaFormHelper}" method="post">
         <input type="hidden" name="id" th:field="*{id}">
         <div class="form-group">
             <label for="nombre">Nombre <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span></label>
@@ -33,8 +33,8 @@
                         <td>Recomendaciones</td>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr th:each="indicador, stat : ${rubrica.indicadores}">
+                    <tbody id="newIndicadoresTable">
+                    <tr th:each="indicador, stat : ${rubricaFormHelper.indicadores}">
                         <td>
                             <input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')} ? 'field-error' : ''">
                             <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')}" th:errors="*{indicadores[__${stat.index}__].nombre}"></span>
@@ -66,6 +66,39 @@
         </div>
         <button type="button" class="btn btn-secondary" id="addIndicator">Agregar indicador</button>
 
+        <h4 class="mt-4 mb-2">Indicadores existentes</h4>
+        <div class="row">
+            <div class="col-12 table-responsive" id="existingIndicadoresTable">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Criterio</th>
+                            <th>Descripción</th>
+                            <th>Función</th>
+                            <th>Condición</th>
+                            <th>Recomendaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="existingIndicador, stat : ${existingIndicadores}">
+                            <td>
+                                <div class="custom-control custom-switch mb-2">
+                                    <input type="checkbox" class="custom-control-input" th:id="existingIndicador- + ${stat.index}" th:value="${existingIndicador.id}" th:field="*{existingIndicadores}">
+                                    <label class="custom-control-label" th:for="existingIndicador- + ${stat.index}" th:text="${existingIndicador.nombre}"></label>
+                                </div>
+                            </td>
+                            <td><p th:text="${existingIndicador.criterio}"></p></td>
+                            <td><p th:text="${existingIndicador.descripcion}"></p></td>
+                            <td><p th:text="${existingIndicador.funcion}"></p></td>
+                            <td><p th:text="${existingIndicador.condicion}"></p></td>
+                            <td><p th:text="${existingIndicador.recomendaciones}"></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="text-lg-right mt-3 mb-4">
             <button type="submit" class="btn btn-success d-lg-inline d-block submit-btn" th:text="${actionBtn}"></button>
         </div>
@@ -78,7 +111,7 @@
     var i = 1;
     var currentId = 0;
     $("#addIndicator").click(function() {
-        $("tbody tr:last").clone().find(".indicator-input").each(function() {
+        $("#newIndicadoresTable tr:last").clone().find(".indicator-input").each(function() {
             var currentClass = 'nombre';
             $(this).val('').attr('id', function(_, id) {
                 currentClass = id.split('-')[0];

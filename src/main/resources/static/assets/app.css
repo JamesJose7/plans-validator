@@ -48,3 +48,8 @@ textarea.field-error {
     vertical-align: middle;
     font-size: 18px;
 }
+
+/* Rubricas */
+#existingIndicadoresTable {
+    max-height: 600px;
+}

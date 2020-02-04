@@ -27,6 +27,14 @@ public class Rubrica extends BaseEntity {
     @OneToOne
     private RestriccionRubrica restriccion;
 
+    public Rubrica() { }
+
+    public Rubrica(String nombre, String descripcion, List<Indicador> indicadores) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.indicadores = indicadores;
+    }
+
     public String getNombre() {
         return nombre;
     }
