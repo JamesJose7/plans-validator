@@ -22,7 +22,8 @@ public class RubricaFormHelper {
 
     public RubricaFormHelper() { }
 
-    public RubricaFormHelper(String nombre, String descripcion, List<Indicador> indicadores) {
+    public RubricaFormHelper(Long id, String nombre, String descripcion, List<Indicador> indicadores) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.indicadores = indicadores;
@@ -71,11 +72,12 @@ public class RubricaFormHelper {
     }
 
     public Rubrica getRubrica() {
-        return new Rubrica(nombre, descripcion,
+        return new Rubrica(id, nombre, descripcion,
                 Stream.concat(getIndicadores().stream(), getExistingIndicadores().stream()).collect(Collectors.toList()));
     }
 
     public static RubricaFormHelper wrapRubrica(Rubrica rubrica) {
-        return new RubricaFormHelper(rubrica.getNombre(), rubrica.getDescripcion(), rubrica.getIndicadores());
+        return new RubricaFormHelper(rubrica.getId(), rubrica.getNombre(),
+                rubrica.getDescripcion(), rubrica.getIndicadores());
     }
 }

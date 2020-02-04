@@ -39,6 +39,7 @@
                             <input type="text" class="form-control indicator-input" th:id="nombre- + __${stat.index}__" name="nombre" th:value="${indicador.nombre}" th:field="*{indicadores[__${stat.index}__].nombre}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')} ? 'field-error' : ''">
                             <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].nombre')}" th:errors="*{indicadores[__${stat.index}__].nombre}"></span>
                             <input type="hidden" class="indicator-input" th:id="id- + __${stat.index}__" name="id" th:value="${indicador.id}" th:field="*{indicadores[__${stat.index}__].id}">
+                            <input type="hidden" class="indicator-input" th:id="rubricas- + __${stat.index}__" name="rubricas" th:value="${indicador.rubricas}" th:field="*{indicadores[__${stat.index}__].rubricas}">
                         </td>
                         <td>
                             <input type="text" class="form-control indicator-input" th:id="criterio- + __${stat.index}__" name="criterio" th:value="${indicador.criterio}" th:field="*{indicadores[__${stat.index}__].criterio}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].criterio')} ? 'field-error' : ''">
@@ -68,7 +69,7 @@
 
         <h4 class="mt-4 mb-2">Indicadores existentes</h4>
         <div class="row">
-            <div class="col-12 table-responsive" id="existingIndicadoresTable">
+            <div class="col-12 table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -122,7 +123,7 @@
             $(this).val('').attr('name', function(_, id) {
                 return `indicadores[${currentId}].${currentClass}`
             });
-        }).end().appendTo("tbody");
+        }).end().appendTo("#newIndicadoresTable");
         i++;
     });
 </script>

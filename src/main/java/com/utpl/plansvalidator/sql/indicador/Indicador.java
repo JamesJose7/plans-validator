@@ -9,8 +9,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Indicador extends BaseEntity {
@@ -40,7 +40,7 @@ public class Indicador extends BaseEntity {
             name = "indicadores_rubrica",
             joinColumns = @JoinColumn(name = "indicador_id"),
             inverseJoinColumns = @JoinColumn(name = "rubrica_id"))
-    private List<Rubrica> rubricas;
+    private Set<Rubrica> rubricas;
 
     public String getNombre() {
         return nombre;
@@ -106,17 +106,17 @@ public class Indicador extends BaseEntity {
         this.recomendaciones = recomendaciones;
     }
 
-    public List<Rubrica> getRubricas() {
+    public Set<Rubrica> getRubricas() {
         return rubricas;
     }
 
-    public void setRubricas(List<Rubrica> rubricas) {
+    public void setRubricas(Set<Rubrica> rubricas) {
         this.rubricas = rubricas;
     }
 
     public void addRubrica(Rubrica rubrica) {
         if (this.rubricas == null)
-            this.rubricas = new ArrayList<>();
+            this.rubricas = new HashSet<>();
         this.rubricas.add(rubrica);
     }
 }

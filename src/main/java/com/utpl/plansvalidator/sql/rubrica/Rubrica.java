@@ -29,7 +29,8 @@ public class Rubrica extends BaseEntity {
 
     public Rubrica() { }
 
-    public Rubrica(String nombre, String descripcion, List<Indicador> indicadores) {
+    public Rubrica(Long id, String nombre, String descripcion, List<Indicador> indicadores) {
+        setId(id);
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.indicadores = indicadores;
