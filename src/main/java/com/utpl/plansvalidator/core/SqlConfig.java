@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -26,9 +27,17 @@ public class SqlConfig {
     @Autowired
     private Environment env;
 
+    @Profile("dev")
     @Bean
-    @ConfigurationProperties(prefix = "plansvalidator.sql.datasource")
+    @ConfigurationProperties(prefix = "plansvalidator-dev.sql.datasource")
     public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
+    @Profile("prod")
+    @Bean(name = "dataSource")
+    @ConfigurationProperties(prefix = "plansvalidator-prod.sql.datasource")
+    public DataSource prodDataSource() {
         return DataSourceBuilder.create().build();
     }
 
