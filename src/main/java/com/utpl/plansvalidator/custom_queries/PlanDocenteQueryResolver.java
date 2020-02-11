@@ -17,14 +17,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlanDocenteQueryResolver {
-    public static final String QUERY_WRAPPER = "SELECT * FROM (%s, id as id from %s) t WHERE %s AND id=%d";
+    public static final String QUERY_WRAPPER = "SELECT * FROM (%s) t WHERE %s";
 
     @PersistenceContext
     private EntityManager entityManager;
 
     public CustomResultList executeQuery(String query, String condition, int planId) throws JSQLParserException, SQLSyntaxErrorException {
-        String[] splitQuery = query.toLowerCase().split("from");
-        query = String.format(QUERY_WRAPPER, splitQuery[0], splitQuery[1], condition, planId);
+//        String[] splitQuery = query.toLowerCase().split("from");
+//        query = String.format(QUERY_WRAPPER, splitQuery[0], splitQuery[1], condition, planId);
+        query = String.format(QUERY_WRAPPER, query, condition);
+        if (query.contains("@{idPlan}"))
+            query = query.replaceAll("@\\{idPlan}", planId + "");
         List<String> columnNames = new ArrayList<>();
 
         // Parse query to get aliases while also checking it's a valid select statement and no other query
