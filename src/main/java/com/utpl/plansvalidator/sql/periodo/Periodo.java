@@ -1,20 +1,55 @@
 package com.utpl.plansvalidator.sql.periodo;
 
-import com.utpl.plansvalidator.core.BaseEntity;
 import com.utpl.plansvalidator.sql.enlacesrubrica.EnlaceRubricas;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
-public class Periodo extends BaseEntity {
+@Table(name = "periodo")
+public class Periodo implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 45)
+    @Column(name = "nombre")
     private String nombre;
+    @Size(max = 45)
+    @Column(name = "guid")
     private String guid;
+    @Size(max = 45)
+    @Column(name = "codigo")
     private String codigo;
-    private int id_canvas;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id_canvas")
+    private int idCanvas;
 
     @OneToOne
     private EnlaceRubricas enlaceRubricas;
+
+    public Periodo() {}
+
+    public Periodo(Integer id) {
+        this.id = id;
+    }
+
+    public Periodo(Integer id, int idCanvas) {
+        this.id = id;
+        this.idCanvas = idCanvas;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -40,12 +75,12 @@ public class Periodo extends BaseEntity {
         this.codigo = codigo;
     }
 
-    public int getId_canvas() {
-        return id_canvas;
+    public int getIdCanvas() {
+        return idCanvas;
     }
 
-    public void setId_canvas(int id_canvas) {
-        this.id_canvas = id_canvas;
+    public void setIdCanvas(int idCanvas) {
+        this.idCanvas = idCanvas;
     }
 
     public EnlaceRubricas getEnlaceRubricas() {

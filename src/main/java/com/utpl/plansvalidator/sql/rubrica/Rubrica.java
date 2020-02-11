@@ -9,10 +9,12 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "RubricaValidacion")
 public class Rubrica extends BaseEntity {
     @NotNull
     @Size(min = 2, max = 100, message = "*Debe tener mínimo {min} caracteres y máximo {max}")

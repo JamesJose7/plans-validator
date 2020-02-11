@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PeriodoRepository extends CrudRepository<Periodo, Long> {
+public interface PeriodoRepository extends CrudRepository<Periodo, Integer> {
     @NotNull
     @Override
     List<Periodo> findAll();

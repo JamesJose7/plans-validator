@@ -3,16 +3,14 @@ package com.utpl.plansvalidator.sql.indicador;
 import com.utpl.plansvalidator.core.BaseEntity;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "IndicadorValidacion")
 public class Indicador extends BaseEntity {
     // TODO: ADD TIPO
 

@@ -1,72 +1,165 @@
 package com.utpl.plansvalidator.sql.plandocente;
 
-import com.utpl.plansvalidator.core.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.utpl.plansvalidator.sql.componente.Componente;
 import com.utpl.plansvalidator.sql.periodo.Periodo;
 import com.utpl.plansvalidator.sql.restriccionrubrica.RestriccionRubrica;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
-public class Plan extends BaseEntity {
+@Table(name = "plan")
+public class Plan implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @JsonIgnore
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+
+    @JsonIgnore
+    @Size(max = 45)
+    @Column(name = "ciclo")
     private String ciclo;
-    private int campo_formacion;
-    private int organizacion_curricular;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "prerequisitos")
+    private String prerequisitos;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "corequisitos")
+    private String corequisitos;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "importancia")
+    private String importancia;
+    @Size(max = 2)
+    @Column(name = "texto_base_en_biblioteca")
+    private String textoBaseEnBiblioteca;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "recursos_complementarios")
+    private String recursosComplementarios;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "oer")
+    private String oer;
 
+    @JsonIgnore
+    @Size(max = 45)
+    @Column(name = "paralelo")
+    private String paralelo;
+
+    @JsonIgnore
+    @Size(max = 45)
+    @Column(name = "guid")
+    private String guid;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "bibliografia_basica")
+    private String bibliografiaBasica;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "register")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date register;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "competencia_componente")
+    private String competenciaComponente;
+
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "competencia_carrera")
+    private String competenciaCarrera;
+
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "puntaje_docencia_b1")
+    private BigDecimal puntajeDocenciaB1;
+    @Column(name = "puntaje_docencia_b2")
+    private BigDecimal puntajeDocenciaB2;
+    @Column(name = "puntaje_practica_b1")
+    private BigDecimal puntajePracticaB1;
+    @Column(name = "puntaje_practica_b2")
+    private BigDecimal puntajePracticaB2;
+    @Column(name = "puntaje_autonomo_b1")
+    private BigDecimal puntajeAutonomoB1;
+    @Column(name = "puntaje_autonomo_b2")
+    private BigDecimal puntajeAutonomoB2;
+
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "presentacion")
+    private String presentacion;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "contextualizacion")
+    private String contextualizacion;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "adaptacion_curricular")
+    private String adaptacionCurricular;
+
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "presentacion_html")
+    private String presentacionHtml;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "contextualizacion_html")
+    private String contextualizacionHtml;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "importancia_html")
+    private String importanciaHtml;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "prerequisitos_html")
+    private String prerequisitosHtml;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "adaptacion_curricular_html")
+    private String adaptacionCurricularHtml;
+
+    @JoinColumn(name = "periodo", referencedColumnName = "id")
     @ManyToOne
-    @JoinColumn(name="periodo")
     private Periodo periodo;
 
-    @Column(columnDefinition="TEXT")
-    private String prerequisitos;
-    @Column(columnDefinition="TEXT")
-    private String corequisitos;
-    @Column(columnDefinition="TEXT")
-    private String importancia;
-    private String texto_base_en_biblioteca;
-    @Column(columnDefinition="TEXT")
-    private String recursos_complementarios;
-    @Column(columnDefinition="TEXT")
-    private String oer;
-    private String paralelo;
-    private String guid;
-    @Column(columnDefinition="TEXT")
-    private String bibliografia_basica;
-    private int componente;
-    private Timestamp register;
-    @Column(columnDefinition="TEXT")
-    private String competencia_componente;
-    private double puntaje_docencia_b1;
-    private double puntaje_docencia_b2;
-    private double puntaje_practica_b1;
-    private double puntaje_practica_b2;
-    private double puntaje_autonomo_b1;
-    private double puntaje_autonomo_b2;
-    @Column(columnDefinition="TEXT")
-    private String competencia_carrera;
-    private int modalidad;
-    @Column(columnDefinition="TEXT")
-    private String presentacion;
-    @Column(columnDefinition="TEXT")
-    private String contextualizacion;
-    @Column(columnDefinition="TEXT")
-    private String adaptacion_curricular;
-    private int tipo_asignatura;
-    @Column(columnDefinition="TEXT")
-    private String presentacion_html;
-    @Column(columnDefinition="TEXT")
-    private String contextualizacion_html;
-    @Column(columnDefinition="TEXT")
-    private String importancia_html;
-    @Column(columnDefinition="TEXT")
-    private String prerequisitos_html;
-    @Column(columnDefinition="TEXT")
-    private String adaptacion_curricular_html;
+    @JoinColumn(name = "componente", referencedColumnName = "id")
+    @ManyToOne
+    private Componente componente;
 
     @ManyToOne
     @JoinColumn(name="restriccionRubrica_id")
     private RestriccionRubrica restriccionRubrica;
+
+
+    public Plan() {
+    }
+
+    public Plan(Integer id) {
+        this.id = id;
+    }
+
+    public Plan(Integer id, Date register) {
+        this.id = id;
+        this.register = register;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCiclo() {
         return ciclo;
@@ -74,30 +167,6 @@ public class Plan extends BaseEntity {
 
     public void setCiclo(String ciclo) {
         this.ciclo = ciclo;
-    }
-
-    public int getCampo_formacion() {
-        return campo_formacion;
-    }
-
-    public void setCampo_formacion(int campo_formacion) {
-        this.campo_formacion = campo_formacion;
-    }
-
-    public int getOrganizacion_curricular() {
-        return organizacion_curricular;
-    }
-
-    public void setOrganizacion_curricular(int organizacion_curricular) {
-        this.organizacion_curricular = organizacion_curricular;
-    }
-
-    public Periodo getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(Periodo periodo) {
-        this.periodo = periodo;
     }
 
     public String getPrerequisitos() {
@@ -124,20 +193,20 @@ public class Plan extends BaseEntity {
         this.importancia = importancia;
     }
 
-    public String getTexto_base_en_biblioteca() {
-        return texto_base_en_biblioteca;
+    public String getTextoBaseEnBiblioteca() {
+        return textoBaseEnBiblioteca;
     }
 
-    public void setTexto_base_en_biblioteca(String texto_base_en_biblioteca) {
-        this.texto_base_en_biblioteca = texto_base_en_biblioteca;
+    public void setTextoBaseEnBiblioteca(String textoBaseEnBiblioteca) {
+        this.textoBaseEnBiblioteca = textoBaseEnBiblioteca;
     }
 
-    public String getRecursos_complementarios() {
-        return recursos_complementarios;
+    public String getRecursosComplementarios() {
+        return recursosComplementarios;
     }
 
-    public void setRecursos_complementarios(String recursos_complementarios) {
-        this.recursos_complementarios = recursos_complementarios;
+    public void setRecursosComplementarios(String recursosComplementarios) {
+        this.recursosComplementarios = recursosComplementarios;
     }
 
     public String getOer() {
@@ -164,100 +233,84 @@ public class Plan extends BaseEntity {
         this.guid = guid;
     }
 
-    public String getBibliografia_basica() {
-        return bibliografia_basica;
+    public String getBibliografiaBasica() {
+        return bibliografiaBasica;
     }
 
-    public void setBibliografia_basica(String bibliografia_basica) {
-        this.bibliografia_basica = bibliografia_basica;
+    public void setBibliografiaBasica(String bibliografiaBasica) {
+        this.bibliografiaBasica = bibliografiaBasica;
     }
 
-    public int getComponente() {
-        return componente;
-    }
-
-    public void setComponente(int componente) {
-        this.componente = componente;
-    }
-
-    public Timestamp getRegister() {
+    public Date getRegister() {
         return register;
     }
 
-    public void setRegister(Timestamp register) {
+    public void setRegister(Date register) {
         this.register = register;
     }
 
-    public String getCompetencia_componente() {
-        return competencia_componente;
+    public String getCompetenciaComponente() {
+        return competenciaComponente;
     }
 
-    public void setCompetencia_componente(String competencia_componente) {
-        this.competencia_componente = competencia_componente;
+    public void setCompetenciaComponente(String competenciaComponente) {
+        this.competenciaComponente = competenciaComponente;
     }
 
-    public double getPuntaje_docencia_b1() {
-        return puntaje_docencia_b1;
+    public String getCompetenciaCarrera() {
+        return competenciaCarrera;
     }
 
-    public void setPuntaje_docencia_b1(double puntaje_docencia_b1) {
-        this.puntaje_docencia_b1 = puntaje_docencia_b1;
+    public void setCompetenciaCarrera(String competenciaCarrera) {
+        this.competenciaCarrera = competenciaCarrera;
     }
 
-    public double getPuntaje_docencia_b2() {
-        return puntaje_docencia_b2;
+    public BigDecimal getPuntajeDocenciaB1() {
+        return puntajeDocenciaB1;
     }
 
-    public void setPuntaje_docencia_b2(double puntaje_docencia_b2) {
-        this.puntaje_docencia_b2 = puntaje_docencia_b2;
+    public void setPuntajeDocenciaB1(BigDecimal puntajeDocenciaB1) {
+        this.puntajeDocenciaB1 = puntajeDocenciaB1;
     }
 
-    public double getPuntaje_practica_b1() {
-        return puntaje_practica_b1;
+    public BigDecimal getPuntajeDocenciaB2() {
+        return puntajeDocenciaB2;
     }
 
-    public void setPuntaje_practica_b1(double puntaje_practica_b1) {
-        this.puntaje_practica_b1 = puntaje_practica_b1;
+    public void setPuntajeDocenciaB2(BigDecimal puntajeDocenciaB2) {
+        this.puntajeDocenciaB2 = puntajeDocenciaB2;
     }
 
-    public double getPuntaje_practica_b2() {
-        return puntaje_practica_b2;
+    public BigDecimal getPuntajePracticaB1() {
+        return puntajePracticaB1;
     }
 
-    public void setPuntaje_practica_b2(double puntaje_practica_b2) {
-        this.puntaje_practica_b2 = puntaje_practica_b2;
+    public void setPuntajePracticaB1(BigDecimal puntajePracticaB1) {
+        this.puntajePracticaB1 = puntajePracticaB1;
     }
 
-    public double getPuntaje_autonomo_b1() {
-        return puntaje_autonomo_b1;
+    public BigDecimal getPuntajePracticaB2() {
+        return puntajePracticaB2;
     }
 
-    public void setPuntaje_autonomo_b1(double puntaje_autonomo_b1) {
-        this.puntaje_autonomo_b1 = puntaje_autonomo_b1;
+    public void setPuntajePracticaB2(BigDecimal puntajePracticaB2) {
+        this.puntajePracticaB2 = puntajePracticaB2;
     }
 
-    public double getPuntaje_autonomo_b2() {
-        return puntaje_autonomo_b2;
+    public BigDecimal getPuntajeAutonomoB1() {
+        return puntajeAutonomoB1;
     }
 
-    public void setPuntaje_autonomo_b2(double puntaje_autonomo_b2) {
-        this.puntaje_autonomo_b2 = puntaje_autonomo_b2;
+    public void setPuntajeAutonomoB1(BigDecimal puntajeAutonomoB1) {
+        this.puntajeAutonomoB1 = puntajeAutonomoB1;
     }
 
-    public String getCompetencia_carrera() {
-        return competencia_carrera;
+    public BigDecimal getPuntajeAutonomoB2() {
+        return puntajeAutonomoB2;
     }
 
-    public void setCompetencia_carrera(String competencia_carrera) {
-        this.competencia_carrera = competencia_carrera;
-    }
-
-    public int getModalidad() {
-        return modalidad;
-    }
-
-    public void setModalidad(int modalidad) {
-        this.modalidad = modalidad;
+    public void setPuntajeAutonomoB2(BigDecimal puntajeAutonomoB2) {
+        this.puntajeAutonomoB2 = puntajeAutonomoB2;
     }
 
     public String getPresentacion() {
@@ -276,60 +329,68 @@ public class Plan extends BaseEntity {
         this.contextualizacion = contextualizacion;
     }
 
-    public String getAdaptacion_curricular() {
-        return adaptacion_curricular;
+    public String getAdaptacionCurricular() {
+        return adaptacionCurricular;
     }
 
-    public void setAdaptacion_curricular(String adaptacion_curricular) {
-        this.adaptacion_curricular = adaptacion_curricular;
+    public void setAdaptacionCurricular(String adaptacionCurricular) {
+        this.adaptacionCurricular = adaptacionCurricular;
     }
 
-    public int getTipo_asignatura() {
-        return tipo_asignatura;
+    public String getPresentacionHtml() {
+        return presentacionHtml;
     }
 
-    public void setTipo_asignatura(int tipo_asignatura) {
-        this.tipo_asignatura = tipo_asignatura;
+    public void setPresentacionHtml(String presentacionHtml) {
+        this.presentacionHtml = presentacionHtml;
     }
 
-    public String getPresentacion_html() {
-        return presentacion_html;
+    public String getContextualizacionHtml() {
+        return contextualizacionHtml;
     }
 
-    public void setPresentacion_html(String presentacion_html) {
-        this.presentacion_html = presentacion_html;
+    public void setContextualizacionHtml(String contextualizacionHtml) {
+        this.contextualizacionHtml = contextualizacionHtml;
     }
 
-    public String getContextualizacion_html() {
-        return contextualizacion_html;
+    public String getImportanciaHtml() {
+        return importanciaHtml;
     }
 
-    public void setContextualizacion_html(String contextualizacion_html) {
-        this.contextualizacion_html = contextualizacion_html;
+    public void setImportanciaHtml(String importanciaHtml) {
+        this.importanciaHtml = importanciaHtml;
     }
 
-    public String getImportancia_html() {
-        return importancia_html;
+    public String getPrerequisitosHtml() {
+        return prerequisitosHtml;
     }
 
-    public void setImportancia_html(String importancia_html) {
-        this.importancia_html = importancia_html;
+    public void setPrerequisitosHtml(String prerequisitosHtml) {
+        this.prerequisitosHtml = prerequisitosHtml;
     }
 
-    public String getPrerequisitos_html() {
-        return prerequisitos_html;
+    public String getAdaptacionCurricularHtml() {
+        return adaptacionCurricularHtml;
     }
 
-    public void setPrerequisitos_html(String prerequisitos_html) {
-        this.prerequisitos_html = prerequisitos_html;
+    public void setAdaptacionCurricularHtml(String adaptacionCurricularHtml) {
+        this.adaptacionCurricularHtml = adaptacionCurricularHtml;
     }
 
-    public String getAdaptacion_curricular_html() {
-        return adaptacion_curricular_html;
+    public Periodo getPeriodo() {
+        return periodo;
     }
 
-    public void setAdaptacion_curricular_html(String adaptacion_curricular_html) {
-        this.adaptacion_curricular_html = adaptacion_curricular_html;
+    public void setPeriodo(Periodo periodo) {
+        this.periodo = periodo;
+    }
+
+    public Componente getComponente() {
+        return componente;
+    }
+
+    public void setComponente(Componente componente) {
+        this.componente = componente;
     }
 
     public RestriccionRubrica getRestriccionRubrica() {

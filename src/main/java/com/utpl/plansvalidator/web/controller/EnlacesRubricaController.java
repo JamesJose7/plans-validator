@@ -106,7 +106,7 @@ public class EnlacesRubricaController {
 
     @PostMapping("/enlaceRubricas/edit")
     public String postEditRubrica(EnlaceRubricas enlaceRubricas,
-                                  @RequestParam("previousPeriodo") Long previousPeriodoId,
+                                  @RequestParam("previousPeriodo") int previousPeriodoId,
                                   RedirectAttributes redirectAttributes) {
         String succesRedirect = "redirect:/enlaceRubricas";
         String failureRedirect = "redirect:/enlaceRubricas/edit/" + enlaceRubricas.getId();

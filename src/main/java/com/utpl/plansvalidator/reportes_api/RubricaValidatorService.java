@@ -19,13 +19,13 @@ public class RubricaValidatorService {
     private PlanDocenteQueryResolver planDocenteQueryResolver;
 
     private Reporte reporte;
-    private Long currentPlanId;
+    private int currentPlanId;
 
     public Reporte validate(List<Rubrica> rubricas, Plan plan) {
         // Build reporte
         currentPlanId = plan.getId();
         reporte = new Reporte();
-        reporte.setNombre(plan.getComponente() + "");
+        reporte.setNombre(plan.getComponente().getNombre());
         reporte.setDescripcion("");
         // Get query results
         rubricas.stream()

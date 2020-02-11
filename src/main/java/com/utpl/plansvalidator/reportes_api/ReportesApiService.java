@@ -1,5 +1,7 @@
 package com.utpl.plansvalidator.reportes_api;
 
+import com.utpl.plansvalidator.sql.componente.Componente;
+import com.utpl.plansvalidator.sql.componente.ComponenteRepository;
 import com.utpl.plansvalidator.sql.enlacesrubrica.EnlaceRubricas;
 import com.utpl.plansvalidator.sql.enlacesrubrica.EnlaceRubricasRepository;
 import com.utpl.plansvalidator.sql.periodo.Periodo;
@@ -23,20 +25,25 @@ public class ReportesApiService {
     @Autowired
     private PeriodoRepository periodoRepository;
     @Autowired
+    private ComponenteRepository componenteRepository;
+    @Autowired
     private PlanRepository planRepository;
 
     @Autowired
     private RubricaValidatorService rubricaValidatorService;
 
-    @GetMapping(value = "/reporte/{periodoId}/{componenteId}")
+    @GetMapping(value = "/reporte/{periodoId}/{componenteCodigo}")
     public Reporte getReporteRubrica(
             @PathVariable("periodoId") String periodoId,
-            @PathVariable("componenteId") int componenteId
+            @PathVariable("componenteCodigo") String componenteCodigo
     ) {
         Optional<Periodo> periodoOptional = periodoRepository.findByGuid(periodoId);
         if (!periodoOptional.isPresent())
             throw new ResourceNotFoundException("No se encontró el periodo seleccionado");
-        Optional<Plan> planOptional = planRepository.findByPeriodoAndComponente(periodoOptional.get(), componenteId);
+        Optional<Componente> componenteOptional = componenteRepository.findByCodigo(componenteCodigo);
+        if (!componenteOptional.isPresent())
+            throw new ResourceNotFoundException("No se encontró el componente seleccionado");
+        Optional<Plan> planOptional = planRepository.findByPeriodoAndComponente(periodoOptional.get(), componenteOptional.get());
         if (!planOptional.isPresent())
             throw new ResourceNotFoundException("No se encontró el plan seleccionado");
         Optional<EnlaceRubricas> enlaceRubricasOptional = enlaceRubricasRepository.findByPeriodo(periodoOptional.get());
