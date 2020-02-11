@@ -10,7 +10,8 @@ import com.utpl.plansvalidator.sql.plandocente.Plan;
 import com.utpl.plansvalidator.sql.plandocente.PlanRepository;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,25 +34,34 @@ public class ReportesApiService {
     private RubricaValidatorService rubricaValidatorService;
 
     @GetMapping(value = "/reporte/{periodoId}/{componenteCodigo}")
-    public Reporte getReporteRubrica(
+    public ResponseEntity<Object> getReporteRubrica(
             @PathVariable("periodoId") String periodoId,
             @PathVariable("componenteCodigo") String componenteCodigo
     ) {
         Optional<Periodo> periodoOptional = periodoRepository.findByGuid(periodoId);
         if (!periodoOptional.isPresent())
-            throw new ResourceNotFoundException("No se encontró el periodo seleccionado");
+            return new ResponseEntity<>(
+                    new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No se encontró el periodo seleccionado"),
+                    HttpStatus.NOT_FOUND);
         Optional<Componente> componenteOptional = componenteRepository.findByCodigo(componenteCodigo);
         if (!componenteOptional.isPresent())
-            throw new ResourceNotFoundException("No se encontró el componente seleccionado");
+            return new ResponseEntity<>(
+                    new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No se encontró el componente seleccionado"),
+                    HttpStatus.NOT_FOUND);
         Optional<Plan> planOptional = planRepository.findByPeriodoAndComponente(periodoOptional.get(), componenteOptional.get());
         if (!planOptional.isPresent())
-            throw new ResourceNotFoundException("No se encontró el plan seleccionado");
+            return new ResponseEntity<>(
+                    new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No se encontró el plan seleccionado"),
+                    HttpStatus.NOT_FOUND);
         Optional<EnlaceRubricas> enlaceRubricasOptional = enlaceRubricasRepository.findByPeriodo(periodoOptional.get());
         if (!enlaceRubricasOptional.isPresent())
-            throw new ResourceNotFoundException("No se han adjuntado rúbricas a este período");
+            return new ResponseEntity<>(
+                    new ErrorResponse(HttpStatus.NOT_FOUND.value(), "No se han adjuntado rúbricas a este período"),
+                    HttpStatus.NOT_FOUND);
         // Get all 'Rubricas' for the current 'Plan
         List<Rubrica> rubricas = enlaceRubricasOptional.get().getRubricas();
         // Run validation
-        return rubricaValidatorService.validate(rubricas, planOptional.get());
+        Reporte report = rubricaValidatorService.validate(rubricas, planOptional.get());
+        return new ResponseEntity<>(report, HttpStatus.OK);
     }
 }

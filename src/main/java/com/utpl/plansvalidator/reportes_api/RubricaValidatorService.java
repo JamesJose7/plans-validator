@@ -6,6 +6,8 @@ import com.utpl.plansvalidator.sql.indicador.Indicador;
 import com.utpl.plansvalidator.sql.plandocente.Plan;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 import net.sf.jsqlparser.JSQLParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Service
 public class RubricaValidatorService {
+    private static Logger logger = LoggerFactory.getLogger(RubricaValidatorService.class.getSimpleName());
+
     @Autowired
     private PlanDocenteQueryResolver planDocenteQueryResolver;
 
@@ -38,20 +42,28 @@ public class RubricaValidatorService {
 
     private Reporte.IndicadorReporte executeQuery(Indicador indicador) {
         CustomResultList customResultList = new CustomResultList();
-        try {
-            customResultList = planDocenteQueryResolver.executeQuery(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
-        } catch (JSQLParserException | SQLSyntaxErrorException e) {
-            e.printStackTrace();
-            // TODO: Handle exceptions when query running fails
-        }
         // Build indicador
         Reporte.IndicadorReporte indicadorReporte = new Reporte.IndicadorReporte();
         indicadorReporte.setNombre(indicador.getNombre());
         indicadorReporte.setCriterio(indicador.getCriterio());
-        indicadorReporte.setExitoso(!customResultList.getResultList().isEmpty());
-        if (customResultList.getResultList().isEmpty())
-            indicadorReporte.addError(indicador.getRecomendaciones());
+        try {
+            customResultList = planDocenteQueryResolver.executeQuery(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
+        } catch (JSQLParserException | SQLSyntaxErrorException e) {
+            logger.error("SQL Format exception on indicador: " + indicador.getNombre());
+            // Build error response
+            indicadorReporte.addError(String.format("Error en la función: %s o condición: %s",
+                    clean(indicador.getFuncion()), indicador.getCondicion()));
+        }
+        if (customResultList.getResultList() != null) {
+            indicadorReporte.setExitoso(!customResultList.getResultList().isEmpty());
+            if (customResultList.getResultList().isEmpty())
+                indicadorReporte.addError(indicador.getRecomendaciones());
+        }
         indicadorReporte.setCondicion(indicador.getCondicion());
         return indicadorReporte;
+    }
+
+    private String clean(String funcion) {
+        return funcion.replaceAll("\r", "").replaceAll("\n", " ");
     }
 }
