@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLSyntaxErrorException;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RubricaValidatorService {
@@ -32,11 +32,21 @@ public class RubricaValidatorService {
         reporte.setNombre(plan.getComponente().getNombre());
         reporte.setDescripcion("");
         // Get query results
-        rubricas.stream()
+        List<Reporte.IndicadorReporte> indicatorsReports = rubricas.stream()
                 .map(Rubrica::getIndicadores)
                 .flatMap(Collection::stream)
                 .map(this::executeQuery)
-                .forEach(indicadorReporte -> reporte.addIndicador(indicadorReporte));
+                .collect(Collectors.toList());
+        // Group criterias
+        Map<String, List<Reporte.IndicadorReporte>> groupByCriterio = indicatorsReports.stream()
+                .collect(Collectors.groupingBy(
+                        Reporte.IndicadorReporte::getCriterio,
+                        Collectors.mapping(indicadorReporte -> indicadorReporte,
+                                Collectors.collectingAndThen(Collectors.toSet(), ArrayList::new))));
+        List<Reporte.IndicadorReporteGroup> groups = groupByCriterio.entrySet().stream()
+                .map(entry -> new Reporte.IndicadorReporteGroup(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        reporte.setGrupos(groups);
         return reporte;
     }
 
@@ -44,8 +54,10 @@ public class RubricaValidatorService {
         CustomResultList customResultList = new CustomResultList();
         // Build indicador
         Reporte.IndicadorReporte indicadorReporte = new Reporte.IndicadorReporte();
+        indicadorReporte.setId(indicador.getId());
         indicadorReporte.setNombre(indicador.getNombre());
         indicadorReporte.setCriterio(indicador.getCriterio());
+        indicadorReporte.setDescripcion(indicador.getDescripcion());
         try {
             customResultList = planDocenteQueryResolver.executeQuery(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
         } catch (JSQLParserException | SQLSyntaxErrorException e) {
