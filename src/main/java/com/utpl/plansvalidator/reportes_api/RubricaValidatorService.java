@@ -75,6 +75,9 @@ public class RubricaValidatorService {
                 Reporte.ResultadoRango rango = new Reporte.ResultadoRango(
                         (double) resultList[0], (double) resultList[1], (double) resultList[2]);
                 indicadorReporte.setResultado(rango);
+                if (rango.getResultado() > rango.getMax() ||
+                    rango.getResultado() < rango.getMin())
+                    indicadorReporte.addError(indicador.getRecomendaciones());
             }
         } catch (JSQLParserException | SQLSyntaxErrorException e) {
             logger.error("SQL Format exception on indicador: " + indicador.getNombre());
