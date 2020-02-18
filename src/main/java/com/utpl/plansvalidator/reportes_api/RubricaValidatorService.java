@@ -3,6 +3,7 @@ package com.utpl.plansvalidator.reportes_api;
 import com.utpl.plansvalidator.custom_queries.CustomResultList;
 import com.utpl.plansvalidator.custom_queries.PlanDocenteQueryResolver;
 import com.utpl.plansvalidator.sql.indicador.Indicador;
+import com.utpl.plansvalidator.sql.indicador.TipoIndicador;
 import com.utpl.plansvalidator.sql.plandocente.Plan;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 import net.sf.jsqlparser.JSQLParserException;
@@ -55,23 +56,32 @@ public class RubricaValidatorService {
         // Build indicador
         Reporte.IndicadorReporte indicadorReporte = new Reporte.IndicadorReporte();
         indicadorReporte.setId(indicador.getId());
+        indicadorReporte.setTipo(indicador.getTipo());
         indicadorReporte.setNombre(indicador.getNombre());
         indicadorReporte.setCriterio(indicador.getCriterio());
         indicadorReporte.setDescripcion(indicador.getDescripcion());
+        indicadorReporte.setCondicion(indicador.getCondicion());
         try {
-            customResultList = planDocenteQueryResolver.executeQuery(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
+            if (indicador.getTipo() == TipoIndicador.BINARY.getCode()) {
+                customResultList = planDocenteQueryResolver.binaryResult(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
+                if (customResultList.getResultList() != null) {
+                    indicadorReporte.setResultado(!customResultList.getResultList().isEmpty());
+                    if (customResultList.getResultList().isEmpty())
+                        indicadorReporte.addError(indicador.getRecomendaciones());
+                }
+            } else if (indicador.getTipo() == TipoIndicador.RANGE.getCode()) {
+                customResultList = planDocenteQueryResolver.rangeResult(indicador.getFuncion(), indicador.getCondicion(), currentPlanId);
+                Object[] resultList = customResultList.getResultList().get(0);
+                Reporte.ResultadoRango rango = new Reporte.ResultadoRango(
+                        (double) resultList[0], (double) resultList[1], (double) resultList[2]);
+                indicadorReporte.setResultado(rango);
+            }
         } catch (JSQLParserException | SQLSyntaxErrorException e) {
             logger.error("SQL Format exception on indicador: " + indicador.getNombre());
             // Build error response
             indicadorReporte.addError(String.format("Error en la función: %s o condición: %s",
                     clean(indicador.getFuncion()), indicador.getCondicion()));
         }
-        if (customResultList.getResultList() != null) {
-            indicadorReporte.setExitoso(!customResultList.getResultList().isEmpty());
-            if (customResultList.getResultList().isEmpty())
-                indicadorReporte.addError(indicador.getRecomendaciones());
-        }
-        indicadorReporte.setCondicion(indicador.getCondicion());
         return indicadorReporte;
     }
 

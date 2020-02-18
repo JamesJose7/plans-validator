@@ -42,6 +42,11 @@
                             <input type="hidden" class="indicator-input" th:id="rubricas- + __${stat.index}__" name="rubricas" th:value="${indicador.rubricas}" th:field="*{indicadores[__${stat.index}__].rubricas}">
                         </td>
                         <td>
+                            <select name="tipo" th:id="tipo- + __${stat.index}__" class="custom-select indicator-input">
+                                <option th:each="type : ${indicatorTypes}" th:field="*{indicadores[__${stat.index}__].tipo}" th:value="${type.code}" th:text="${type.name}"></option>
+                            </select>
+                        </td>
+                        <td>
                             <input type="text" class="form-control indicator-input" th:id="criterio- + __${stat.index}__" name="criterio" th:value="${indicador.criterio}" th:field="*{indicadores[__${stat.index}__].criterio}" th:classappend="${#fields.hasErrors('indicadores[__${stat.index}__].criterio')} ? 'field-error' : ''">
                             <span class="field-error" th:if="${#fields.hasErrors('indicadores[__${stat.index}__].criterio')}" th:errors="*{indicadores[__${stat.index}__].criterio}"></span>
                         </td>

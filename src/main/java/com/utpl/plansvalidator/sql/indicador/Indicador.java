@@ -12,8 +12,6 @@ import java.util.Set;
 @Entity
 @Table(name = "IndicadorValidacion")
 public class Indicador extends BaseEntity {
-    // TODO: ADD TIPO
-
     @NotNull
     @Size(min = 2, max = 50, message = "*Debe tener mínimo {min} caracteres y máximo {max}")
     private String nombre;
@@ -32,6 +30,7 @@ public class Indicador extends BaseEntity {
     @Size(min = 1, message = "*No puede estar vacía")
     private String funcion;
     private String recomendaciones;
+    private int tipo;
 
     @ManyToMany
     @JoinTable(
@@ -116,5 +115,13 @@ public class Indicador extends BaseEntity {
         if (this.rubricas == null)
             this.rubricas = new HashSet<>();
         this.rubricas.add(rubrica);
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 }

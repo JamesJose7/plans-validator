@@ -68,10 +68,11 @@ public class Reporte {
 
     public static class IndicadorReporte {
         private Long id;
+        private int tipo;
         private String criterio;
         private String nombre;
         private String descripcion;
-        private boolean exitoso;
+        private Object resultado;
         private String condicion;
         private List<String> errores;
 
@@ -81,6 +82,14 @@ public class Reporte {
 
         public void setId(Long id) {
             this.id = id;
+        }
+
+        public int getTipo() {
+            return tipo;
+        }
+
+        public void setTipo(int tipo) {
+            this.tipo = tipo;
         }
 
         public String getCriterio() {
@@ -107,12 +116,12 @@ public class Reporte {
             this.descripcion = descripcion;
         }
 
-        public boolean isExitoso() {
-            return exitoso;
+        public Object getResultado() {
+            return resultado;
         }
 
-        public void setExitoso(boolean exitoso) {
-            this.exitoso = exitoso;
+        public void setResultado(Object resultado) {
+            this.resultado = resultado;
         }
 
         public String getCondicion() {
@@ -135,6 +144,44 @@ public class Reporte {
             if (this.errores == null)
                 this.errores = new ArrayList<>();
             this.errores.add(error);
+        }
+    }
+
+    public static class ResultadoRango {
+        private double resultado;
+        private double min;
+        private double max;
+
+        public ResultadoRango() { }
+
+        public ResultadoRango(double resultado, double min, double max) {
+            this.resultado = resultado;
+            this.min = min;
+            this.max = max;
+        }
+
+        public double getResultado() {
+            return resultado;
+        }
+
+        public void setResultado(double resultado) {
+            this.resultado = resultado;
+        }
+
+        public double getMin() {
+            return min;
+        }
+
+        public void setMin(double min) {
+            this.min = min;
+        }
+
+        public double getMax() {
+            return max;
+        }
+
+        public void setMax(double max) {
+            this.max = max;
         }
     }
 }

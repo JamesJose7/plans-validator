@@ -4,6 +4,7 @@ import com.utpl.plansvalidator.custom_queries.CustomResultList;
 import com.utpl.plansvalidator.custom_queries.PlanDocenteQueryResolver;
 import com.utpl.plansvalidator.sql.indicador.Indicador;
 import com.utpl.plansvalidator.sql.indicador.IndicadorRepository;
+import com.utpl.plansvalidator.sql.indicador.TipoIndicador;
 import com.utpl.plansvalidator.sql.rubrica.Rubrica;
 import com.utpl.plansvalidator.sql.rubrica.RubricaFormHelper;
 import com.utpl.plansvalidator.sql.rubrica.RubricaRepository;
@@ -20,10 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class RubricaController {
@@ -52,6 +50,7 @@ public class RubricaController {
             rubricaForm = (RubricaFormHelper) model.getAttribute("rubricaFormHelper");
         // Existing indicadores
         Iterable<Indicador> existingIndicadores = indicadorRepository.findAll();
+        model.addAttribute("indicatorTypes", Arrays.asList(TipoIndicador.values()));
         model.addAttribute("existingIndicadores", existingIndicadores);
         model.addAttribute("rubricaFormHelper", rubricaForm);
         model.addAttribute("action", context + "/rubricas/add");
@@ -69,6 +68,7 @@ public class RubricaController {
         List<Indicador> existingIndicadores = indicadorRepository.findAll();
         // Remove indicadores from this rubrica
         optionalRubrica.get().getIndicadores().forEach(existingIndicadores::remove);
+        model.addAttribute("indicatorTypes", Arrays.asList(TipoIndicador.values()));
         model.addAttribute("existingIndicadores", existingIndicadores);
         model.addAttribute("rubricaFormHelper", RubricaFormHelper.wrapRubrica(optionalRubrica.get()));
         model.addAttribute("action", context + "/rubricas/add");
