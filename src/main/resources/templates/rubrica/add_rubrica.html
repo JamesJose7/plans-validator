@@ -42,8 +42,8 @@
                             <input type="hidden" class="indicator-input" th:id="rubricas- + __${stat.index}__" name="rubricas" th:value="${indicador.rubricas}" th:field="*{indicadores[__${stat.index}__].rubricas}">
                         </td>
                         <td>
-                            <select name="tipo" th:id="tipo- + __${stat.index}__" class="custom-select indicator-input">
-                                <option th:each="type : ${indicatorTypes}" th:field="*{indicadores[__${stat.index}__].tipo}" th:value="${type.code}" th:text="${type.name}"></option>
+                            <select name="tipo" th:id="tipo- + __${stat.index}__" class="custom-select indicator-input" th:field="*{indicadores[__${stat.index}__].tipo}">
+                                <option th:each="type : ${indicatorTypes}" th:value="${type.code}" th:text="${type.name}"></option>
                             </select>
                         </td>
                         <td>
