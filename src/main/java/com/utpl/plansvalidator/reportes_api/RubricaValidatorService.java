@@ -31,7 +31,7 @@ public class RubricaValidatorService {
         currentPlanId = plan.getId();
         reporte = new Reporte();
         reporte.setNombre(plan.getComponente().getNombre());
-        reporte.setDescripcion("");
+        reporte.setDescripcion(plan.getImportancia());
         // Get query results
         List<Reporte.IndicadorReporte> indicatorsReports = rubricas.stream()
                 .map(Rubrica::getIndicadores)
@@ -48,6 +48,15 @@ public class RubricaValidatorService {
                 .map(entry -> new Reporte.IndicadorReporteGroup(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
         reporte.setGrupos(groups);
+        // Get stats for this report
+        int total = indicatorsReports.size();
+        int successful = (int) indicatorsReports.stream()
+                .map(Reporte.IndicadorReporte::getErrores)
+                .filter(Objects::isNull)
+                .count();
+        int failed = total - successful;
+        Reporte.Resumen stats = new Reporte.Resumen(total, failed, successful);
+        reporte.setResumen(stats);
         return reporte;
     }
 

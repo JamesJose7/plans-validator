@@ -6,6 +6,7 @@ import java.util.List;
 public class Reporte {
     private String nombre;
     private String descripcion;
+    private Resumen resumen;
     private List<IndicadorReporteGroup> grupos;
 
     public String getNombre() {
@@ -22,6 +23,14 @@ public class Reporte {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Resumen getResumen() {
+        return resumen;
+    }
+
+    public void setResumen(Resumen resumen) {
+        this.resumen = resumen;
     }
 
     public List<IndicadorReporteGroup> getGrupos() {
@@ -63,6 +72,43 @@ public class Reporte {
 
         public void setIndicadores(List<IndicadorReporte> indicadores) {
             this.indicadores = indicadores;
+        }
+    }
+    public static class Resumen {
+        private int totalIndicadores;
+        private int fallidos;
+        private int exitosos;
+
+        public Resumen() { }
+
+        public Resumen(int totalIndicadores, int fallidos, int exitosos) {
+            this.totalIndicadores = totalIndicadores;
+            this.fallidos = fallidos;
+            this.exitosos = exitosos;
+        }
+
+        public int getTotalIndicadores() {
+            return totalIndicadores;
+        }
+
+        public void setTotalIndicadores(int totalIndicadores) {
+            this.totalIndicadores = totalIndicadores;
+        }
+
+        public int getFallidos() {
+            return fallidos;
+        }
+
+        public void setFallidos(int fallidos) {
+            this.fallidos = fallidos;
+        }
+
+        public int getExitosos() {
+            return exitosos;
+        }
+
+        public void setExitosos(int exitosos) {
+            this.exitosos = exitosos;
         }
     }
 
