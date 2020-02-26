@@ -38,7 +38,7 @@ public class RubricaValidatorService {
                 .flatMap(Collection::stream)
                 .map(this::executeQuery)
                 .collect(Collectors.toList());
-        // Group criterias
+        // Group criteria
         Map<String, List<Reporte.IndicadorReporte>> groupByCriterio = indicatorsReports.stream()
                 .collect(Collectors.groupingBy(
                         Reporte.IndicadorReporte::getCriterio,
@@ -48,6 +48,9 @@ public class RubricaValidatorService {
                 .map(entry -> new Reporte.IndicadorReporteGroup(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
         reporte.setGrupos(groups);
+        // Sort criteria
+        groupByCriterio.values()
+                .forEach(list -> list.sort((o1, o2) -> o1.getNombre().compareToIgnoreCase(o2.getNombre())));
         // Get stats for this report
         int total = indicatorsReports.size();
         int successful = (int) indicatorsReports.stream()
